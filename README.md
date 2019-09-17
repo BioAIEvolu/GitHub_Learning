@@ -99,10 +99,10 @@ git config命令的--global参数，用了这个参数，表示你这台机器�
 拍摄项目的快照。标志-m 让Git接下里的消息（“Started project"）记录到项目中的历史记录中，输出表明我们在分支master 上，而且有一个文件被修改了，可能需要重新配置自己的账号或者名字，再执行上面的代码就会成功
   
 - 关联自己的仓库url地址
-回到刚刚GitHub页面，找到自己的url地址
+  回到刚刚GitHub页面，找到自己的url地址
      
-`git remote add origin https://自己的仓库url地址`     
-与github（远程仓库）建立联系
+  `git remote add origin https://自己的仓库url地址`     
+  与github（远程仓库）建立联系
 - 将本地库上传到github上
 `git push -u origin master`   
   执行完毕后，如果没有异常，会等待几秒，然后跳出一个让我们输入Username 和password的窗口，我们只需要输入个人的github登录账号和密码即可。  
@@ -126,31 +126,35 @@ $ git log --pretty=oneline
 
 ### 工作流程
 ![三棵树](https://www.runoob.com/wp-content/uploads/2014/05/trees.png)
-Git本地仓库实际上由三个tree组成
-- 1.工作目录，持有实际文件 
-- 2. 暂存区，临时保存改动 
-- 3. HEAD，指向最后一次提交的结果
+Git本地仓库实际上由三个tree组成  
+
+  - 工作目录，持有实际文件 
+  - 暂存区，临时保存改动 
+  - HEAD，指向最后一次提交的结果  
+
 #### 命令行操作
-- 本地提出更改，添加至暂存区 
+##### 本地提出更改，添加至暂存区 
 ```
 git add <filename>
 git add *
 ```
-- 将改动实际提交至HEAD
+##### 将改动实际提交至HEAD
 ```
 git commit -m "代码提交信息"
 ```
-- 推送改动
+##### 推送改动
 你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：
 ```
 $ git push origin (指定分支名称)
 ```
-如果你还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器，你可以使用如下命令添加：
+##### 如果你还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器，你可以使用如下命令添加：
 ```
 git remote add origin <server>
 ```
 如此你就能够将你的改动推送到所添加的服务器上去了。
-- 克隆
+##### 克隆
+> git clone 是用来从已有的 Git 仓库克隆出一个新的镜像仓库到本地的。
+> [有些时候需要带着用户名和密码进行clone](https://www.jianshu.com/p/1cda2620a5ba)
   - 创建**本地仓库**的克隆版本：
     ```
     git clone /path/to/repository
@@ -159,4 +163,31 @@ git remote add origin <server>
     ```
     git clone username@host:/path/to/repository
     ```
-
+    git clone支持多种协议，除了HTTP(s)以外，还支持SSH、Git、本地文件协议等，下面是一些例子。
+    ```
+    $ git clone http[s]://example.com/path/to/repo.git/
+    $ git clone ssh://example.com/path/to/repo.git/
+    $ git clone git://example.com/path/to/repo.git/
+    $ git clone /opt/git/project.git 
+    $ git clone file:///opt/git/project.git
+    $ git clone ftp[s]://example.com/path/to/repo.git/
+    $ git clone rsync://example.com/path/to/repo.git/
+    ```
+    SSH协议还有另一种写法：
+    ```
+    $ git clone [user@]example.com:path/to/repo.git/
+    ```
+    通常来说，Git协议下载速度最快，SSH协议用于需要用户认证的场合。各种协议优劣的详细讨论请参考[官方文档](http://git-scm.com/book/en/Git-on-the-Server-The-Protocols)。   
+    
+    使用https除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在某些只开放http端口的公司内部就无法使用ssh协议而只能用https。
+    - 克隆一个指定分支到本地
+    ```
+    git clone -b 分支名 <版本库的网址>
+    ```
+    更多：
+    > [git clone -b 相关](https://www.jianshu.com/p/e1e106467449)
+    > [git clone几种可选参数的使用与区别](https://blog.csdn.net/shrimpcolo/article/details/80164741)
+    > [git clone 子模块](https://www.jianshu.com/p/0c0ff714bec0)
+    > [加快git clone 几十倍速度的小方法 （30KB vs 2M）](https://blog.51cto.com/11887934/2051323)
+    
+    
