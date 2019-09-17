@@ -8,6 +8,27 @@
 ![Github用Git做版本控制](https://pic4.zhimg.com/80/d88e52fc7942ef9a94cc8d957239fc9e_hd.jpg)
 
 ![利用Git+Github进行团队协作开发](http://static.open-open.com/lib/uploadImg/20161109/20161109103130_442.png)
+***一些 GitHub 的基本概念**：
+- Repository
+仓库的意思，即你的项目，你想在 GitHub 上开源一个项目，那就必须要新建一个 Repository ，如果你开源的项目多了，你就拥有了多个 Repositories 。
+
+- Issue
+问题的意思，举个例子，就是你开源了一个项目，别人发现你的项目中有bug，或者哪些地方做的不够好，他就可以给你提个 Issue ，即问题，提的问题多了，也就是 Issues ，然后你看到了这些问题就可以去逐个修复，修复ok了就可以一个个的 Close 掉。
+
+- Star
+这个好理解，就是给项目点赞，但是在 GitHub 上的点赞远比微博、知乎点赞难的多，如果你有一个项目获得100个star都算很不容易了！
+
+- Fork
+这个不好翻译，如果实在要翻译我把他翻译成分叉，什么意思呢？你开源了一个项目，别人想在你这个项目的基础上做些改进，然后应用到自己的项目中，这个时候他就可以 Fork 你的项目，这个时候他的 GitHub 主页上就多了一个项目，只不过这个项目是基于你的项目基础（本质上是在原有项目的基础上新建了一个分支，分支的概念后面会在讲解Git的时候说到），他就可以随心所欲的去改进，但是丝毫不会影响原有项目的代码与结构。
+
+- Pull Request
+发起请求，这个其实是基于 Fork 的，还是上面那个例子，如果别人在你基础上做了改进，后来觉得改进的很不错，应该要把这些改进让更多的人收益，于是就想把自己的改进合并到原有项目里，这个时候他就可以发起一个 Pull Request（简称PR） ，原有项目创建人就可以收到这个请求，这个时候他会仔细review你的代码，并且测试觉得OK了，就会接受你的PR，这个时候你做的改进原有项目就会拥有了。
+
+- Watch
+这个也好理解就是观察，如果你 Watch 了某个项目，那么以后只要这个项目有任何更新，你都会第一时间收到关于这个项目的通知提醒。
+
+- Gist
+有些时候你没有项目可以开源，只是单纯的想分享一些代码片段，那这个时候 Gist 就派上用场了！  
 
 ***分支的概念***：
 - master分支，即主分支。任何项目都必须有个这个分支。对项目进行tag或发布版本等操作，都必须在该分支上进行。
@@ -24,17 +45,70 @@
  ## GitHub网站注册与使用教程
  教程里面，最推荐的是官方的[Hello World](https://guides.github.com/activities/hello-world/)是最权威的
  
- ## Git的本地安装
+ ## Git的本地安装与使用
  Linux系统安装GitHub比较容易，不再这里讨论了
  重点看下怎么在windos系统下安装Git
  ### Git BASH的下载安装
  [Git安装教程（windows）](https://www.cnblogs.com/wj-1314/p/7993819.html)
  [Windows下Git的下载与安装](http://baijiahao.baidu.com/s?id=1601036689157983619&wfr=spider&for=pc)
+ ### Git命令行的使用
+ git在本地git中的使用其实跟在GitHub网页上操作的步骤对的一样的  
  #### Git本地配置
  打开Git BASH:
- 1. 设置你的用户名和电子邮件
+1. 首先在本地创建ssh key；
+`$ ssh-keygen -t rsa -C "your_email@youremail.com"`
+- 后面的your_email@youremail.com改为你在github上注册的邮箱，之后会要求确认路径和输入密码，我们这使用默认的一路回车就行。成功的话会在~/下生成.ssh文件夹，进去，打开id_rsa.pub，复制里面的key。
+- 回到github上，进入 Account Settings（账户配置），左边选择SSH Keys，Add SSH Key,title随便填，粘贴在你电脑上生成的key。
+![输入key](https://www.runoob.com/wp-content/uploads/2014/05/github-account.jpg)
+- 为了验证是否成功，在git bash下输入：
+`$ ssh -T git@github.com`
+如果是第一次的会提示是否continue，输入yes就会看到：You've successfully authenticated, but GitHub does not provide shell access 。这就表示已成功连上github。
+2. 设置你的用户名和电子邮件  
+github每次commit都会记录他们
 ```
 git config --global  user.name "Username"
 git config --global  user.email "Username@example.com"
 ```
+git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
 
+#### 创建项目
+
+#### 在github网站上创建一个新的repositoy
+填写项目名称，描述等
+![创建一个新的repositoy](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105112500442-122748843.png)
+创建完成后，跳转到下面页面
+[跳转页](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105112652691-726837378.png)
+记住这个HTTPS地址
+#### 在Git BASH命令行通过mkdir和cd命令，新建并且进入自己的项目文件夹中，然后按顺序输入命令：
+- 初始化git仓库  `git init`  
+完成初始化后，项目文件夹下多出一个隐藏文件夹.git。
+
+- 将项目的所有文件添加到仓库中 `git add .`    
+将项目中未被跟踪的文件都加入到仓库中，它不提交这些文件，而只是让git开始关注他们。  
+如果只想添加某个特定的文件，只需要将.换成特定的名称即可。 
+- 提交注释备注
+`git commit -m "有意义的注释语句"`  
+拍摄项目的快照。标志-m 让Git接下里的消息（“Started project"）记录到项目中的历史记录中，输出表明我们在分支master 上，而且有一个文件被修改了
+若是出现![输出自己的账号或者名字](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105114920269-723803076.png)则输入需要输出自己的账号或者名字，再执行上面的代码就会成功
+![成功执行](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105115400820-537476017.png)
+- 关联自己的仓库url地址
+回到刚刚GitHub页面，找到自己的url地址
+![复制url](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105112724399-2076884498.png)    
+`git remote add origin https://自己的仓库url地址`     
+与github（远程仓库）建立联系
+- 将本地库上传到github上
+`git push -u origin master`   
+  执行完毕后，如果没有异常，会等待几秒，然后跳出一个让我们输入Username 和password的窗口，我们只需要输入个人的github登录账号和密码即可。  
+  
+  把本地库study的所有内容推送到远程仓库（也就是Github）上，此后，每次本地提交后，只要有必要，就可以使用命令`git push origin master`推送最新修改；    
+  
+  至此就完成了将本地项目上传到Github的整个过程。
+- 检查状态 `git status`  
+检查日志和分支信息  
+- 查看提交历史 `git log`  
+每次提交的时候，Git都会生成一个包含40字符的独一无二的引用ID，它记录提交是谁执行的，提交的时间以及提交的指定消息，并非在任何情况下你都需要所有的这些信息，因此Git提供一个选项，让我们能够打印提交历史条目的更简单的版本。
+```
+$ git log --pretty=oneline
+5d6cecad80427924b94b14c6fd2bb82a4fa86840 (HEAD -> master) Started project
+```   
+标志 --pretty=oneline   指定显示一项最重要的信息，提交的引用ID以及为提交记录的消息。
