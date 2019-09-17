@@ -71,7 +71,7 @@ git config --global  user.email "Username@example.com"
 ```
 git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
 
-#### 创建项目
+### 创建项目
 
 #### 在github网站上创建一个新的repositoy
 填写项目名称，描述等
@@ -80,6 +80,8 @@ git config命令的--global参数，用了这个参数，表示你这台机器�
 [跳转页](https://img2018.cnblogs.com/blog/1226410/201811/1226410-20181105112652691-726837378.png)
 记住这个HTTPS地址
 #### 在Git BASH命令行通过mkdir和cd命令，新建并且进入自己的项目文件夹中，然后按顺序输入命令：
+- 创建README.md文件  `touch README.md`   
+  [标准README.md](http://baijiahao.baidu.com/s?id=1644120438928420577&wfr=spider&for=pc)
 - 初始化git仓库  `git init`  
 完成初始化后，项目文件夹下多出一个隐藏文件夹.git。
 
@@ -102,7 +104,7 @@ git config命令的--global参数，用了这个参数，表示你这台机器�
   
   把本地库study的所有内容推送到远程仓库（也就是Github）上，此后，每次本地提交后，只要有必要，就可以使用命令`git push origin master`推送最新修改；    
   
-  至此就完成了将本地项目上传到Github的整个过程。
+  至此就完成了将本地项目上传到Github的整个过程。(PS:加入创建的项目文件夹里面含有VScode中项目的Python代码，则VScode的整个就被上传到GitHub了)  
 - 检查状态 `git status`  
 检查日志和分支信息  
 - 查看提交历史 `git log`  
@@ -112,3 +114,44 @@ $ git log --pretty=oneline
 5d6cecad80427924b94b14c6fd2bb82a4fa86840 (HEAD -> master) Started project
 ```   
 标志 --pretty=oneline   指定显示一项最重要的信息，提交的引用ID以及为提交记录的消息。
+
+### 删除项目
+
+在GitHub -->点入需要删除项目 -->点开setting -->将滚动条滑到底部，找到Danger Zone下的Delete this repository -->点击，会弹出一个警告框，将该项目名称输入进行确认 -->输入密码确认 -->删除成功后，会重新回到个人主界面提醒项目删除成功
+
+### 工作流程
+![三棵树](https://www.runoob.com/wp-content/uploads/2014/05/trees.png)
+Git本地仓库实际上由三个tree组成
+- 1.工作目录，持有实际文件 
+- 2. 暂存区，临时保存改动 
+- 3. HEAD，指向最后一次提交的结果
+#### 命令行操作
+- 本地提出更改，添加至暂存区 
+```
+git add <filename>
+git add *
+```
+- 将改动实际提交至HEAD
+```
+git commit -m "代码提交信息"
+```
+- 推送改动
+你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：
+```
+$ git push origin (指定分支名称)
+```
+如果你还没有克隆现有仓库，并欲将你的仓库连接到某个远程服务器，你可以使用如下命令添加：
+```
+git remote add origin <server>
+```
+如此你就能够将你的改动推送到所添加的服务器上去了。
+- 克隆
+  - 创建**本地仓库**的克隆版本：
+    ```
+    git clone /path/to/repository
+    ```
+  - 创建**远端服务器**上的克隆版本：
+    ```
+    git clone username@host:/path/to/repository
+    ```
+
