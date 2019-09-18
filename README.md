@@ -314,7 +314,7 @@ git log
 - [git各种命令介绍以及碰到的各种坑](https://www.cnblogs.com/smiler/p/5074124.html)
 - [Git知识总览(一) 从 git clone 和 git status 谈起](https://www.cnblogs.com/ludashi/p/8052739.html)
 - [git命令之git clone用法](https://blog.csdn.net/qq_42672770/article/details/81317778)
-- [GitFlow工作流：Git+Github团队协作开发]
+- [GitFlow工作流：Git+Github团队协作开发](https://www.cnblogs.com/yhaing/p/8473746.html) **推荐**
 - [记录自己使用GitHub的点点滴滴](https://www.cnblogs.com/wj-1314/p/9901763.html)
 - [浅谈使用git进行版本控制](https://www.cnblogs.com/wj-1314/p/7992543.html)  **这个博客对git版本控制描述不错，推荐看**
 
