@@ -186,8 +186,51 @@ git remote add origin <server>
     ```
     更多：
     > [git clone -b 相关](https://www.jianshu.com/p/e1e106467449)
+    >
     > [git clone几种可选参数的使用与区别](https://blog.csdn.net/shrimpcolo/article/details/80164741)
+    >
     > [git clone 子模块](https://www.jianshu.com/p/0c0ff714bec0)
+    >
     > [加快git clone 几十倍速度的小方法 （30KB vs 2M）](https://blog.51cto.com/11887934/2051323)
     
-    
+##### 分支
+分支是用来将特性开发绝缘开来的。在你创建仓库的时候，master 是"默认的"分支。在其他分支上进行开发，完成后再将它们合并到主分支上。
+![分支](https://www.runoob.com/wp-content/uploads/2014/05/branches.png)
+- **创建一个叫做"feature_x"的分支，并切换过去：**
+  ```
+  git checkout -b feature_x
+  ```
+- **切换回主分支：**
+  ```
+  git checkout master
+  ```
+- **把新建的分支删掉：**
+  ```
+  git branch -d feature_x
+  ```
+- **将分支推送到远端仓库，让其他人可见:**
+  ```
+  git push origin <branch>
+  ```
+##### 合并与更新
+在分支修改完代码后，就可以合并代码到master上
+- **在合并改动之前，你可以使用如下命令预览差异：**
+  ```
+  git diff <source_branch> <target_branch>
+  ```
+- **更新你的本地仓库至最新改动(远端服务器-->本地计算机的更新)：**
+  ```
+  git pull
+  ```
+  **以在你的工作目录中 *获取（fetch）* 并 *合并（merge）* 远端的改动。**
+- **合并其他分支到你的当前分支（例如 master）:(本地计算机)**
+  ```
+  git merge <branch>
+  ```
+  
+  - 在这两种情况下，git 都会尝试去自动合并改动。但可能出现***冲突（conflicts）***。 这时候就需要你修改这些文件来手动合并这些冲突（conflicts）。改完之后，你需要执行如下命令以将它们标记为合并成功：
+  ```
+  git add <filename>
+  ```
+  
+  
