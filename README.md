@@ -184,6 +184,10 @@ git remote add origin <server>
     ```
     git clone username@host:/path/to/repository
     ```
+    该命令会在本地主机生成一个目录，与远程主机的版本库同名。如果要指定不同的目录名，可以将目录名作为`git clone`命令的第二个参数。  
+    ```
+    $ git clone <版本库的网址> <本地目录名>
+    ```
     git clone支持多种协议，除了HTTP(s)以外，还支持SSH、Git、本地文件协议等，下面是一些例子。
     ```
     $ git clone http[s]://example.com/path/to/repo.git/
@@ -234,6 +238,7 @@ git remote add origin <server>
   ```
   git push origin <branch>
   ```
+- 如果文件删除错了，也可以用`git checkout -- 文件名`还原回来。其实就是**用版本库里的版本替换工作区的版本，无论工作区是修改还是删除**。
 ##### 合并与更新
 在分支修改完代码后，就可以合并代码到master上
 - **在合并改动之前，你可以使用如下命令预览差异：**
@@ -284,32 +289,236 @@ git log
   ```
   git reset HEAD <文件名> 
   ```
-#### 更多git命令
+### 更多Git操作命令
 - **git rm**：从当前的工作空间中和索引中删除文件，例如'git rm app/model/user.rb'
-- **git revert**：还原一个版本的修改，必须提供一个具体的Git版本号，例如'git revert bbaf6fb5060b4875b18ff9ff637ce118256d6f20'，Git的版本号都是生成的一个哈希值
+- **git revert**：如果有远程库存在：使用 `git revert <commit_id>`操作实现**以退为进**， `git revert` 不同于 `git reset` 它不会擦除"回退"之后的 commit_id ,而是正常的当做一次"commit"，产生一次新的操作记录，所以**可以push，不会让你再pull** 。  
+> 还原一个版本的修改，必须提供一个具体的Git版本号，例如'git revert bbaf6fb5060b4875b18ff9ff637ce118256d6f20'，Git的版本号都是生成的一个哈希值
+- **git config --list**: 查看配置信息
+- **git log 文件名**：可以查看该文件所有的修改记录
+  - `--pretty=oneline`参数可以简洁的显示`commit`和说明，注意`--pretty=oneline`参数要写在具体文件前。
+- **git reset** 命令用于改变版本，
+  在Git中，用`HEAD`表示当前版本，上一个版本就是`HEAD^`，上上一个版本就是`HEAD^^`，当然往上100个版本写100个^比较容易数不过来，所以写成`HEAD~100`。
+  - **回滚到上一个版本**
+    ```
+    git reset --hard HEAD^
+    ```
+  - **想回到最新的版本，取消这次回滚**
+    ```
+    git reset  --hard  "commit  id"
+    ```
+    这样就可以去到指定commit id的版本。
 
-##### 查看和修改远端地址
-本地是配了github的ssh-key的，所以也是支持ssh的链接的。下方我们将根据 git remote 远程仓库操作来添加上ssh的仓库地址。
-- 添加远端仓库地址
-  要先配SSH-Key
-  `it remote -v` 命令来查看当前仓库的远端地址  
+    版本号没必要写全，前几位就可以了，Git会自动去找，只要保证id唯一就行。
+- **git reflog**:如果找不到已经删除版本的commit id的话，可以用git reflog显示所有版本的commit 记录。git  log不能查看已经删除的commit，但是git reflog可以。
+
+##### [Git远程操作命令](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+![Git远程操作](http://www.ruanyifeng.com/blogimg/asset/2014/bg2014061202.jpg)
+- git clone
+- git remote
+- git fetch
+- git pull
+- git push
+###### Git Remote
+本地是配了github的ssh-key的，所以也是支持ssh的链接的。下方我们将根据 git remote 远程仓库操作来添加上ssh的仓库地址。  
+   
+**查看和修改远端地址**  
+
+为了便于管理，Git要求每个远程主机都必须指定一个主机名。`git remote`命令就用于管理主机名。 
+- 不带选项的时候，`git remote`命令列出所有远程主机。  
+  ```
+  $ git remote
+  origin
+  ```
+- 使用`-v`选项，可以参看远程主机的网址。
+  ```
+  $ git remote
+  origin  https://github.com/BioAIEvolu/GitHub_Learning.git (fetch)
+  origin  https://github.com/BioAIEvolu/GitHub_Learning.git (push)
+  ```
+  上面命令表示，当前只有一台远程主机，叫做origin，以及它的网址。  
   
-  `git remote add` 远端仓库地址别名 <url> 来添加一个新的仓库地址，下方添加的是一个ssh的仓库链接  
- - 远端仓库地址删除和重命名
-   `git remote -v`  查看目前现有的远端仓库  
+- 克隆版本库的时候，所使用的远程主机自动被Git命名为origin。如果想用其他的主机名，需要用git clone命令的-o选项指定。
+  ```
+  $ git clone -o jQuery https://github.com/jquery/jquery.git
+  $ git remote
+  jQuery
+  ```
+  上面命令表示，克隆的时候，指定远程主机叫做jQuery。
+- `git remote show`命令加上主机名，可以查看该主机的详细信息。
+  ```
+  $ git remote show origin
+  ```
+- `git remote add`命令用于添加远程主机。
+  ```
+  $ git remote add <主机名> <网址>
+  ```
+- `git remote rm`命令用于删除远程主机。
+  ```
+  $ git remote rm <主机名>
+  ```
+- `git remote rename`命令用于远程主机的改名。
+  ```
+  $ git remote rename <原主机名> <新主机名>
+  ```
+###### git fetch
+
+- 一旦远程主机的版本库有了更新（Git术语叫做commit），需要将这些更新取回本地，这时就要用到`git fetch`命令。
+  ```
+  $ git fetch <远程主机名>
+  ```
+  上面命令将某个远程主机的更新，全部取回本地。    
+
+  git fetch命令通常用来查看其他人的进程，因为它取回的代码对你本地的开发代码没有影响。  
+
+  默认情况下，git fetch取回所有分支（branch）的更新。如果只想取回特定分支的更新，可以指定分支名。  
+  ```
+  $ git fetch <远程主机名> <分支名>
+  ```
+  比如，取回origin主机的master分支。
+  ```
+  $ git fetch origin master
+  ```
+  所取回的更新，在本地主机上要用"远程主机名/分支名"的形式读取。比如`origin`主机的`master`，就要用`origin/master`读取。  
+
+- `git branch`命令的`-r`选项，可以用来查看远程分支，`-a`选项查看所有分支
+  ```
+  $ git branch -r
+    origin/master
+  ```
+  ```
+  $ git branch -a
+    feature
+  * master
+    remotes/origin/master
+  ```
+  上面命令表示，本地主机的当前分支是master，远程分支是origin/master。  
+
+  取回远程主机的更新以后，可以在它的基础上，使用`git checkout`命令创建一个新的分支。
+  ```
+  $ git checkout -b newBrach origin/master
+  ```
+  上面命令表示，在`origin/master`的基础上，创建一个新分支。  
+  
+- 此外，也可以使用`git merge`命令或者`git rebase`命令，在本地分支上合并远程分支。
+    ```
+    $ git merge origin/master
+    # 或者
+    $ git rebase origin/master
+    ```
+    面命令表示在当前分支上，合并`origin/master`
+###### git pull
+- `git pull`命令的作用是，取回远程主机某个分支的更新，再与本地的指定分支合并。它的完整格式稍稍有点复杂。
+  ```
+  $ git pull <远程主机名> <远程分支名>:<本地分支名>
+  ```
+  比如，取回`origin`主机的`next`分支，与本地的`master`分支合并，需要写成下面这样。
+  ```
+  $ git pull origin next:master
+  ```
+  如果远程分支是与当前分支合并，则冒号后面的部分可以省略。
+  ```
+  $ git pull origin next
+  ```
+  上面命令表示，取回origin/next分支，再与当前分支合并。实质上，这等同于先做`git fetch`，再做`git merge`。
+  ```
+  $ git fetch origin
+  $ git merge origin/next
+  ```
+  在某些场合，Git会自动在本地分支与远程分支之间，建立一种**追踪关系（tracking）**。比如，在`git clone`的时候，所有本地分支默认与远程主机的同名分支，建立追踪关系，也就是说，本地的`master`分支自动"追踪"`origin/master`分支。  
+  
+  Git也允许手动建立追踪关系。
+  ```
+  git branch --set-upstream master origin/next
+  ```
+  上面命令指定`master`分支追踪`origin/nex`t分支。   
+  
+  如果当前分支与远程分支存在追踪关系，`git pull`就可以省略远程分支名。  
+  ```
+  $ git pull origin
+  ```
+  上面命令表示，本地的当前分支自动与对应的`origin`主机"追踪分支"（remote-tracking branch）进行合并。  
+
+  如果当前分支只有一个追踪分支，连远程主机名都可以省略。
+  ```
+  $ git pull
+  ```
+  上面命令表示，当前分支自动与唯一一个追踪分支进行合并。
+  
+  如果合并需要采用`rebase`模式，可以使用`--rebase`选项。
+  ```
+  $ git pull --rebase <远程主机名> <远程分支名>:<本地分支名>
+  ```
+  如果远程主机删除了某个分支，默认情况下，`git pull`不会在拉取远程分支的时候，删除对应的本地分支。这是为了防止，由于其他人操作了远程主机，导致`git pull`不知不觉删除了本地分支。  
+  
+  但是，你可以改变这个行为，加上参数 `-p `就会在本地删除远程已经删除的分支。
+  ```
+  $ git pull -p
+  # 等同于下面的命令
+  $ git fetch --prune origin 
+  $ git fetch -p
+  ```
+###### git push
+- `git push`命令用于将本地分支的更新，推送到远程主机。它的格式与`git pull`命令相仿。
+  ```
+  $ git push <远程主机名> <本地分支名>:<远程分支名>
+  ```
+  注意，分支推送顺序的写法是<来源地>:<目的地>，所以`git pull`是<远程分支>:<本地分支>，而`git push`是<本地分支>:<远程分支>。  
+  
+- 如果省略远程分支名，则表示将本地分支推送与之存在"追踪关系"的远程分支（通常两者同名），如果该远程分支不存在，则会被新建。
+  ```
+  $ git push origin master
+  ```
+  上面命令表示，将本地的`master`分支推送到`origin`主机的`master`分支。如果后者不存在，则会被新建。  
     
-  `git remote rm origin` 命令来删除别名为 origin 的远端地址  
+- 如果省略本地分支名，则表示删除指定的远程分支，因为这等同于推送一个空的本地分支到远程分支。
+  ```
+  $ git push origin :master
+  # 等同于
+  $ git push origin --delete master
+  ```
+  上面命令表示删除`origin`主机的`master`分支。  
   
+- 如果当前分支与远程分支之间存在追踪关系，则本地分支和远程分支都可以省略。
+  ```
+  $ git push origin
+  ```
+  上面命令表示，将当前分支推送到origin主机的对应分支。  
   
-  `git remote rename origin_ssh origin`  将origin_ssh重命名为origin   
-  
-  
-  ` git remote show origin`  查看push到远端的那个分支上
-  
+  如果当前分支只有一个追踪分支，那么主机名都可以省略。
+  ```
+  $ git push
+  ```
+- 如果当前分支与多个主机存在追踪关系，则可以使用`-u`选项指定一个默认主机，这样后面就可以不加任何参数使用`git push`
+  ```
+  $ git push -u origin master
+  ```
+  上面命令将本地的`master`分支推送到`origin`主机，同时指定`origin`为默认主机，后面就可以不加任何参数使用`git push`了。  
 
+- 不带任何参数的`git push`，默认只推送当前分支，这叫做**simple方式**。此外，还有一种**matching方式**，会推送所有有对应的远程分支的本地分支。Git 2.0版本之前，默认采用`matching`方法，现在改为默认采用`simple`方式。如果要修改这个设置，可以采用`git config`命令。
+  ```
+  $ git config --global push.default matching
+  # 或者
+  $ git config --global push.default simple
+  ```
+- 还有一种情况，就是不管是否存在对应的远程分支，将本地的所有分支都推送到远程主机，这时需要使用`--all`选项。
+  ```
+  $ git push --all origin
+  ```
+  上面命令表示，将所有本地分支都推送到`origin`主机。  
+  
+  如果远程主机的版本比本地版本更新，推送时Git会报错，要求先在本地做`git pull`合并差异，然后再推送到远程主机。这时，如果你一定要推送，可以使用`--force`选项。
+  ```
+  $ git push --force origin 
+  ```
+  上面命令使用`--force`选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用`--force`选项。
+- 最后，`git push`不会推送标签（**tag**），除非使用`--tags`选项。
+  ```
+  $ git push origin --tags
+  ```
 #### git命令总结
 ![git命令总结](https://upload-images.jianshu.io/upload_images/2514846-3ee74d5df5c078f1.png?imageMogr2/auto-orient/strip|imageView2/2/w/608/format/webp)
-### 更多阅读
+![git技术栈](https://i.loli.net/2019/09/19/l3pAXzs1Iqd9vZW.png)
+### 参考文献
 - [Github 简明教程](https://www.runoob.com/w3cnote/git-guide.html)
 - [git各种命令介绍以及碰到的各种坑](https://www.cnblogs.com/smiler/p/5074124.html)
 - [Git知识总览(一) 从 git clone 和 git status 谈起](https://www.cnblogs.com/ludashi/p/8052739.html)
@@ -317,5 +526,7 @@ git log
 - [GitFlow工作流：Git+Github团队协作开发](https://www.cnblogs.com/yhaing/p/8473746.html) **推荐**
 - [记录自己使用GitHub的点点滴滴](https://www.cnblogs.com/wj-1314/p/9901763.html)
 - [浅谈使用git进行版本控制](https://www.cnblogs.com/wj-1314/p/7992543.html)  **这个博客对git版本控制描述不错，推荐看**
+- [git之一： 在windows下安装git和使用总结](https://www.cnblogs.com/sunny18/p/8831939.html) 
+- [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
 
 
