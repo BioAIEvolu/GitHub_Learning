@@ -40,8 +40,14 @@
  
 -   fix分支，即补丁分支，由develop分支检出，用作bug修复，bug修复完成需merge回develop分支，并将其删除。所以该分支属于临时性分支。
  
- - hotfix分支，即热补丁分支。和fix分支的区别在于，该分支由master分支检出，进行线上版本的bug修复，修复完成后merge回master分支，并merge到develop分支上，merge完成后也可以将其删除，也属于临时性分支。
- 
+- hotfix分支，即热补丁分支。和fix分支的区别在于，该分支由master分支检出，进行线上版本的bug修复，修复完成后merge回master分支，并merge到develop分支上，merge完成后也可以将其删除，也属于临时性分支。
+> 更多：
+> 
+> [“开发者神器”的GitHub](https://baijiahao.baidu.com/s?id=1594232691312740966&wfr=spider&for=pc)
+> 
+> [GitHub 官方出了一个交互式教程](https://www.zhihu.com/question/20070065?sort=created)
+> 
+> [如何正确使用git和github](https://blog.csdn.net/qq_18297675/article/details/79633950)
  ## GitHub网站注册与使用教程
  教程里面，最推荐的是官方的[Hello World](https://guides.github.com/activities/hello-world/)是最权威的
  
@@ -91,19 +97,29 @@ git config命令的--global参数，用了这个参数，表示你这台机器�
 - 初始化git仓库  `git init`  
 完成初始化后，项目文件夹下多出一个隐藏文件夹.git。
 
-- 将项目的所有文件添加到仓库中 `git add .`    
-将项目中未被跟踪的文件都加入到仓库中，它不提交这些文件，而只是让git开始关注他们。  
-如果只想添加某个特定的文件，只需要将.换成特定的名称即可。 
+- 将项目的所有文件添加到仓库中 
+  ```
+  git add .
+  ```
+  每次增加\、删除和修改文件都需要执行此条命令，然后git stautus看看情况  
+  
+  将项目中未被跟踪的文件都加入到仓库中，它不提交这些文件，而只是让git开始关注他们。  
+  
+  如果只想添加某个特定的文件，只需要将.换成特定的名称即可。 
 - 提交注释备注
-`git commit -m "有意义的注释语句"`  
-拍摄项目的快照。标志-m 让Git接下里的消息（“Started project"）记录到项目中的历史记录中，输出表明我们在分支master 上，而且有一个文件被修改了，可能需要重新配置自己的账号或者名字，再执行上面的代码就会成功
+  ```
+  git commit -m "有意义的注释语句"
+  ```
+  拍摄项目的快照。标志-m 让Git接下里的消息（“Started project"）记录到项目中的历史记录中，输出表明我们在分支master 上，而且有一个文件被修改了，可能需要重新配置自己的账号或者名字，再执行上面的代码就会成功  
+  
+  `-a`参数表示将所有修改了的文件都加入当前提交中。命令`git commit -a `只对状态为M的文件有用，而对新增而为添加的问题是不起作用的，因为我们新添加的文件NewCreateFile仍然处于 Untracked 状态中。 （要先执行`git add .`） 
   
 - 关联自己的仓库url地址
   回到刚刚GitHub页面，找到自己的url地址
      
   `git remote add origin https://自己的仓库url地址`     
   与github（远程仓库）建立联系
-- 将本地库上传到github上
+- 将本地库上传到github服务器上对应的分支中
 `git push -u origin master`   
   执行完毕后，如果没有异常，会等待几秒，然后跳出一个让我们输入Username 和password的窗口，我们只需要输入个人的github登录账号和密码即可。  
   
@@ -142,6 +158,11 @@ git add *
 ```
 git commit -m "代码提交信息"
 ```
+- **二次提交**：
+  ```
+  git commit -am "备注文字"
+  ```
+  标志-a 让Git 将仓库中所有修改了的文件都加入当前提交中，（如果我们两次提交之间加入了新文件，我们执行`get add . `操作，将新文件加入到仓库中）标志-m让Git咱提交历史中记录一条消息。
 ##### 推送改动
 你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：
 ```
@@ -192,7 +213,8 @@ git remote add origin <server>
     > [git clone 子模块](https://www.jianshu.com/p/0c0ff714bec0)
     >
     > [加快git clone 几十倍速度的小方法 （30KB vs 2M）](https://blog.51cto.com/11887934/2051323)
-    
+    > 
+    > [Git基本使用方法——clone项目到本地](https://blog.csdn.net/kuuhakuna/article/details/78705778)
 ##### 分支
 分支是用来将特性开发绝缘开来的。在你创建仓库的时候，master 是"默认的"分支。在其他分支上进行开发，完成后再将它们合并到主分支上。
 ![分支](https://www.runoob.com/wp-content/uploads/2014/05/branches.png)
@@ -219,6 +241,7 @@ git remote add origin <server>
   git diff <source_branch> <target_branch>
   ```
 - **更新你的本地仓库至最新改动(远端服务器-->本地计算机的更新)：**
+  多人开发时，在push前一定要先更新本地仓库至最新改动，避免许多不必要的冲突
   ```
   git pull
   ```
@@ -228,9 +251,71 @@ git remote add origin <server>
   git merge <branch>
   ```
   
-  - 在这两种情况下，git 都会尝试去自动合并改动。但可能出现***冲突（conflicts）***。 这时候就需要你修改这些文件来手动合并这些冲突（conflicts）。改完之后，你需要执行如下命令以将它们标记为合并成功：
+- 在这两种情况下，git 都会尝试去自动合并改动。但可能出现***冲突（conflicts）***。 这时候就需要你修改这些文件来手动合并这些冲突（conflicts）。改完之后，你需要执行如下命令以将它们标记为合并成功：
   ```
   git add <filename>
   ```
   
+##### 标签
+为软件发布创建标签是推荐的。这个概念早已存在，在 SVN 中也有。你可以执行如下命令创建一个叫做 1.0.0 的标签：
+```
+git tag 1.0.0 1b2e1d63ff
+```
+*1b2e1d63ff* 是你想要标记的提交 ID 的前 10 位字符。可以使用下列命令获取提交 ID：
+```
+git log
+```
+你也可以使用少一点的提交 ID 前几位，只要它的指向具有唯一性。
+##### 替换本地改动
+- 假如操作失误，可以使用如下命令替换掉本地改动：
+  ```
+  git checkout -- <filename>
+  ```
+  此命令会**使用 HEAD 中的最新内容替换掉你的工作目录中的文件。已添加到暂存区的改动以及新文件都不会受到影响。**    
   
+  **注意：**对未暂存的修改文件进行回滚的操作命令生效了，再想找回被丢弃的内容就找不回了，此操作是**不可逆**的
+  
+- 假如你想丢弃你在本地的所有改动与提交，可以到服务器上获取最新的版本历史，并将你本地主分支指向它：  
+  ```
+  git fetch origin
+  git reset --hard origin/master
+  ```
+- 另外，对已经暂存的文件执行以下命令，回到了之前暂存的状态。
+  ```
+  git reset HEAD <文件名> 
+  ```
+#### 更多git命令
+- **git rm**：从当前的工作空间中和索引中删除文件，例如'git rm app/model/user.rb'
+- **git revert**：还原一个版本的修改，必须提供一个具体的Git版本号，例如'git revert bbaf6fb5060b4875b18ff9ff637ce118256d6f20'，Git的版本号都是生成的一个哈希值
+
+##### 查看和修改远端地址
+本地是配了github的ssh-key的，所以也是支持ssh的链接的。下方我们将根据 git remote 远程仓库操作来添加上ssh的仓库地址。
+- 添加远端仓库地址
+  要先配SSH-Key
+  `it remote -v` 命令来查看当前仓库的远端地址  
+  
+  `git remote add` 远端仓库地址别名 <url> 来添加一个新的仓库地址，下方添加的是一个ssh的仓库链接  
+ - 远端仓库地址删除和重命名
+   `git remote -v`  查看目前现有的远端仓库  
+    
+  `git remote rm origin` 命令来删除别名为 origin 的远端地址  
+  
+  
+  `git remote rename origin_ssh origin`  将origin_ssh重命名为origin   
+  
+  
+  ` git remote show origin`  查看push到远端的那个分支上
+  
+
+#### git命令总结
+![git命令总结](https://upload-images.jianshu.io/upload_images/2514846-3ee74d5df5c078f1.png?imageMogr2/auto-orient/strip|imageView2/2/w/608/format/webp)
+### 更多阅读
+- [Github 简明教程](https://www.runoob.com/w3cnote/git-guide.html)
+- [git各种命令介绍以及碰到的各种坑](https://www.cnblogs.com/smiler/p/5074124.html)
+- [Git知识总览(一) 从 git clone 和 git status 谈起](https://www.cnblogs.com/ludashi/p/8052739.html)
+- [git命令之git clone用法](https://blog.csdn.net/qq_42672770/article/details/81317778)
+- [GitFlow工作流：Git+Github团队协作开发]
+- [记录自己使用GitHub的点点滴滴](https://www.cnblogs.com/wj-1314/p/9901763.html)
+- [浅谈使用git进行版本控制](https://www.cnblogs.com/wj-1314/p/7992543.html)  **这个博客对git版本控制描述不错，推荐看**
+
+
