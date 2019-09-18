@@ -1,4 +1,5 @@
-# 先了解Git、GitHub
+# Git与GitHub入门笔记
+## 先了解Git、GitHub
 > - **git**：团队协作开发中，大部分都会用到版本控制软件，比如Git、Svn等。Git是一个分布式版本控制系统，让程序员团队能够协作开发项目，Git帮助大家管理为项目所做的工作，避免一个人所做的修改影响其他人所做的修改。你在项目中实现一个新功能的时候，Git将跟踪你对每个文件所做的修改。确定代码可行后，你将提交所做的修改，而Git将记录项目最新的状态，如果你犯了错，想撤销所做的修改，可轻松的返回以前的任何可行状态。
 > - **GitHub**：是用于版本控制和协作的代码托管平台，它可以让您和其他人在任何地方协同工作。GitHub 可以托管各种Git版本库，并提供一个web界面。GitHub上的项目都存储在仓库中，后者包含与项目相关联的一切：代码，项目参与者的信息，问题和bug报告等。
 > **总结**：Github是代码托管平台，是协作的工具;而Git是版本控制工具。Git不需要联网，在本机就可以使用。当然，Git和Github双剑合璧，是最顺畅的。
@@ -528,5 +529,6 @@ git log
 - [浅谈使用git进行版本控制](https://www.cnblogs.com/wj-1314/p/7992543.html)  **这个博客对git版本控制描述不错，推荐看**
 - [git之一： 在windows下安装git和使用总结](https://www.cnblogs.com/sunny18/p/8831939.html) 
 - [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
-
+- [【图文详解】如何利用Github在Markdown中插入图片？](https://www.jianshu.com/p/c7618a53454f) 
+- [Markdown中插入图片有什么技巧？](https://www.zhihu.com/question/21065229)
 
