@@ -406,7 +406,7 @@ git log
     # 或者
     $ git rebase origin/master
     ```
-    面命令表示在当前分支上，合并`origin/master`
+    上面命令表示在当前分支上，合并`origin/master`
 ###### git pull
 - `git pull`命令的作用是，取回远程主机某个分支的更新，再与本地的指定分支合并。它的完整格式稍稍有点复杂。
   ```
