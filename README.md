@@ -519,7 +519,7 @@ git log
 #### git命令总结
 ![git命令总结](https://upload-images.jianshu.io/upload_images/2514846-3ee74d5df5c078f1.png?imageMogr2/auto-orient/strip|imageView2/2/w/608/format/webp)
 ![git技术栈](https://i.loli.net/2019/09/19/l3pAXzs1Iqd9vZW.png)
-### 参考文献
+### 参考阅读
 - [Github 简明教程](https://www.runoob.com/w3cnote/git-guide.html)
 - [git各种命令介绍以及碰到的各种坑](https://www.cnblogs.com/smiler/p/5074124.html)
 - [Git知识总览(一) 从 git clone 和 git status 谈起](https://www.cnblogs.com/ludashi/p/8052739.html)
@@ -531,4 +531,8 @@ git log
 - [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
 - [【图文详解】如何利用Github在Markdown中插入图片？](https://www.jianshu.com/p/c7618a53454f) 
 - [Markdown中插入图片有什么技巧？](https://www.zhihu.com/question/21065229)
-
+- [GitHub使用之道](https://www.zhihu.com/topic/19566035/index#module-2749) 
+- [有哪些GitHub项目的README堪称教科书？](https://www.zhihu.com/question/299390628/answer/787789423)
+- [逛Github不可缺少的插件](https://zhuanlan.zhihu.com/p/44153011)
+- [GitHub 的用法与礼仪](https://zhuanlan.zhihu.com/p/37599617)
+- [GitHub 入门教程](https://zhuanlan.zhihu.com/p/76692687)
